@@ -55,7 +55,7 @@ class GitIncludeMacro extends IncludeProcessor {
 			throw new Exception("Please specify git path!")
 		}
 		StringBuilder content = readContent(target.replace("git@",""));
-		reader.push_include(content.toString(), target, target, 1, attributes);
+		reader.push_include(content.toString(), (String)target.substring(target.lastIndexOf(".")), target, 1, attributes);
 
 	}
 	
@@ -74,7 +74,7 @@ class GitIncludeMacro extends IncludeProcessor {
 		Process proc = pb.start();
 		
 		content.setLength(0);
-		BufferedReader br = new BufferedReader(new InputStreamReader(proc.getInputStream()));
+		BufferedReader br = new BufferedReader(new InputStreamReader(proc.getInputStream(),"UTF-8"));
 		
 		String line = ""
 		while (line != null) {
