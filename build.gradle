@@ -1,0 +1,47 @@
+buildscript {
+    repositories {
+        jcenter()
+    }
+
+    dependencies {
+        classpath 'org.asciidoctor:asciidoctor-gradle-plugin:1.5.3'
+		classpath 'org.asciidoctor:asciidoctorj-pdf:1.5.0-alpha.11'
+    }
+}
+
+plugins {
+    id 'org.asciidoctor.convert' version '1.5.3'
+}
+
+apply plugin: 'org.asciidoctor.convert'
+
+ext {
+	outDir = 'doc/build/docs'
+}
+
+dependencies {
+	asciidoctor project('buildSrc')
+}
+
+asciidoctor {
+
+	outputDir = file("$outDir")
+	sourceDir = new File("doc")	
+	backends = ['html5']
+    attributes = [
+			'source-highlighter': 'highlightjs',
+			'git' : 'C:/Program Files (x86)/Git/bin/git.exe' // adjust
+			]
+}
+
+
+defaultTasks 'asciidoctor'
+
+task cleanup {
+	doLast{
+		delete "$outDir"
+	}
+}
+
+task make(dependsOn: ['cleanup','asciidoctor'])
+asciidoctor.mustRunAfter cleanup

@@ -1,0 +1,6 @@
+[source,java]
+----
+include::git@path/to/source.java[repodir="path/where/.git/will/be",branch="master"]
+----
+
+example

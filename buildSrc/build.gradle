@@ -1,0 +1,10 @@
+apply plugin: 'groovy'
+ 
+repositories {
+    jcenter()
+}
+ 
+dependencies {
+    compile 'org.asciidoctor:asciidoctorj:1.5.0'
+    compile 'org.codehaus.groovy:groovy-all:2.4.7'
+}
