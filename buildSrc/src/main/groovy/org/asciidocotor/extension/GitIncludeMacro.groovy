@@ -19,6 +19,7 @@ class GitIncludeMacro extends IncludeProcessor {
 	private String repodir;
 	private String branch;
 	private String git;
+	private String gitEnc;
 	
 	GitIncludeMacro(Map<String,Object> config) {
 		super(config);
@@ -35,6 +36,7 @@ class GitIncludeMacro extends IncludeProcessor {
 		String rep = (String)(attributes.get("repodir"));
 		String br = (String)(attributes.get("branch"));
 		String gi = (String)(at.get("git"));
+		String gie = (String)(attributes.get("encoding"))
 		
 		if(rep != null) {
 			this.repodir = rep;
@@ -42,17 +44,26 @@ class GitIncludeMacro extends IncludeProcessor {
 		else {
 			this.repodir = ".";
 		}
+		
 		if(br != null) {
 			this.branch = br;
 		}
 		else {
 			this.branch="master";
 		}
+		
 		if(gi != null) {
 			this.git = gi;
 		}
 		else {
 			throw new Exception("Please specify git path!")
+		}
+		
+		if(gie != null) {
+			this.gitEnc = gie
+		}
+		else {
+			this.gitEnc = "UTF-8"
 		}
 		StringBuilder content = readContent(target.replace("git@",""));
 		reader.push_include(content.toString(), (String)target.substring(target.lastIndexOf(".")), target, 1, attributes);
@@ -74,7 +85,7 @@ class GitIncludeMacro extends IncludeProcessor {
 		Process proc = pb.start();
 		
 		content.setLength(0);
-		BufferedReader br = new BufferedReader(new InputStreamReader(proc.getInputStream(),"UTF-8"));
+		BufferedReader br = new BufferedReader(new InputStreamReader(proc.getInputStream(),this.gitEnc));
 		
 		String line = ""
 		while (line != null) {
